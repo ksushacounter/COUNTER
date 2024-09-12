@@ -2,15 +2,35 @@
 #include<math.h>
 
 class point{
-public:
-    point(float x, float y) : _x(x), _y(y){
-    }
-    float distance(){
-        return sqrt(pow(_x,2) + pow(_y,2));
-    }
 private:
-    float _x;
-    float _y;
+    float size;
+    double array;
+public:
+    point() : array(nullptr), size(10) {
+        double array = new point[size];
+    }
+
+    ~point() {
+        delete[] array;
+    }
+
+    float distance(){
+        float sum = 0;
+        for (int i = 0; i < size; i++){
+            float a = array[i];
+            sum += pow(a,2);
+        }
+        return sqrt(sum);
+    }
+
+    void setx(){
+        
+        } 
+
+    void getx(){
+        
+    }
+
 };
 
 int main(void){
