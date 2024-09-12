@@ -1,44 +1,53 @@
-#include<iostream>
-#include<math.h>
+#include <iostream>
+#include <cmath>
 
-class point{
+class Point {
 private:
-    float size;
-    double array;
+    size_t size;   
+    double* array; 
+
 public:
-    point() : array(nullptr), size(10) {
-        double array = new point[size];
+    Point(size_t size) : size(size) {
+        array = new double[size];
+        for (size_t i = 0; i < size; ++i) {
+            array[i] = 0.0;
+        }
     }
 
-    ~point() {
+    ~Point() {
         delete[] array;
     }
 
-    float distance(){
-        float sum = 0;
-        for (int i = 0; i < size; i++){
-            float a = array[i];
-            sum += pow(a,2);
+    double distance() const {
+        double sum = 0.0;
+        for (size_t i = 0; i < size; ++i) {
+            sum += std::pow(array[i], 2);
         }
-        return sqrt(sum);
+        return std::sqrt(sum);
     }
 
-    void setx(){
-        
-        } 
-
-    void getx(){
-        
+    void set(size_t index, double value) {
+        array[index] = value;
     }
 
+    double get(size_t index) const {
+        return array[index];
+    }
 };
 
-int main(void){
-    float x,y;
-    std:: cout << "Enter x & y:";
-    std:: cin >> x >> y;
+int main() {
+    size_t my_size;
+    std::cin >> my_size;
 
-    point p(x, y);
-    std:: cout << "Distance:" << p.distance() << p.distance() << "\n";
+    Point p(my_size);
+
+    for (size_t i = 0; i < my_size; ++i) {
+        double value;
+        std::cin >> value;
+        p.set(i, value);
+    }
+
+    std::cout << p.distance() << "\n";
+
     return 0;
 }
