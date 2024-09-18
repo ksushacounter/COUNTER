@@ -5,29 +5,40 @@ class table
 {
     struct line
     {
-        KEY;
-        value;
-    } 
-    private : 
+        KEY key;
+        value val;
+    };
+
+private:
     line *array;
     std::size_t count;
     std::size_t capacity;
 
 public:
-    table(void)
+    table()
+        : array(new line[10]), count(0), capacity(10) {}
+
+    table(const table &other)
+        : count(other.count), capacity(other.capacity)
     {
-        array(NULL), count(0), capasity(10);
+        array = new line[capacity];
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            array[i] = other.array[i];
+        }
     }
-    table(const table &);
 
     ~table()
     {
-        this->clean();
+        this->clear();
     }
+
     table &operator=(const table &other)
     {
         if (this == &other)
+        {
             return *this;
+        }
 
         delete[] array;
         count = other.count;
@@ -49,12 +60,12 @@ public:
 
     bool contains(const KEY &key) const
     {
-        return _bfind_info(key) != -1;
+        return search(key) != -1;
     }
 
     std::size_t erase(const KEY &key)
     {
-        std::size_t i = _bfind_info(key);
+        std::size_t i = search(key);
         if (i == -1)
         {
             return 0; // не нашли
@@ -69,8 +80,8 @@ public:
         if (!count)
         {
             this->clear();
-            return 1;
         }
+        return 1;
     }
 
     void clear()
@@ -80,6 +91,7 @@ public:
         count = 0;
     }
 
+private:
     bool memory()
     {
         if (count + 1 > capacity)
@@ -118,4 +130,4 @@ public:
         }
         return static_cast<std::size_t>(-1);
     }
-
+};

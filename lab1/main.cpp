@@ -1,12 +1,34 @@
 
-#include "task1.h"
-#include "task2.h"
 #include <iostream>
+#include <string>
+#include "Table.h" 
 
 int main() {
-    std::cout << task::say_hello("world") << "\n";
-    const int x = 2;
-    const int y = 3;
-    std::cout << x << " + " << y << " = " << task::plus(x, y) << "\n";
+    table<std::string, int> myTable;
+
+    myTable["apple"] = 10;
+    myTable["banana"] = 20;
+    myTable["cherry"] = 30;
+
+    std::cout << "Size: " << myTable.current_size() << std::endl;
+
+    if (myTable.contains("banana")) {
+        std::cout << "Table contains 'banana'" << std::endl;
+    } else {
+        std::cout << "Table does not contain 'banana'" << std::endl;
+    }
+
+    std::cout << "Value for 'apple': " << myTable["apple"] << std::endl;
+
+    myTable.erase("banana");
+    std::cout << "Size after erase: " << myTable.current_size() << std::endl;
+
+    if (!myTable.contains("banana")) {
+        std::cout << "Table does not contain 'banana' anymore" << std::endl;
+    }
+
+    myTable.clear();
+    std::cout << "Size after clear: " << myTable.current_size() << std::endl;
+
     return 0;
 }
