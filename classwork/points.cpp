@@ -14,8 +14,27 @@ public:
         }
     }
 
+    Point(const Point &other)
+    {
+        array = new double[size];
+        for (std::size_t i = 0; i < size; ++i)
+        {
+            array[i] = other.array[i];
+        }
+    }
+
     ~Point() {
         delete[] array;
+    }
+
+    Point &operator = (const Point &other){
+        delete[] array;
+        size = other.size;
+        array = new double[size];
+        for (int i = 0; i < size; i++){
+            array[i] = other.array[i];
+        }
+        return *this;
     }
 
     double distance() const {
@@ -25,6 +44,7 @@ public:
         }
         return std::sqrt(sum);
     }
+
 
     void set(size_t index, double value) {
         array[index] = value;

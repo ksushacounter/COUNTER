@@ -59,7 +59,7 @@ public:
     value &operator[](const KEY &key)
     {
         std::size_t index = search(key);
-        if (index != static_cast<std::size_t>(-1))
+        if (index != -1)
         {
             return array[index].val;
         }
