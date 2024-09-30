@@ -18,7 +18,7 @@ public:
     table()
         : array(new line[10]), count(0), capacity(10) {}
 
-    table(const table &other)
+    table(const table &other)//капасити копируем в сайз
         : count(other.count), capacity(other.capacity)
     {
         array = new line[capacity];
@@ -30,7 +30,7 @@ public:
 
     ~table()
     {
-        this->clear();
+        delete[] array;
     }
 
     table &operator=(const table &other)
@@ -56,7 +56,7 @@ public:
         return count;
     }
 
-    value &operator[](const KEY &key)
+    value &operator[](const KEY &key)//
     {
         std::size_t index = search(key);
         if (index != -1)
@@ -98,8 +98,6 @@ public:
 
     void clear()
     {
-        delete[] array;
-        array = new line[capacity];
         count = 0;
     }
 
@@ -121,6 +119,7 @@ private:
         return true;
     }
 
+public:
     std::size_t search(const KEY &key) const
     {
         std::size_t f = 0, l = count;
@@ -140,6 +139,6 @@ private:
                 return m;
             }
         }
-        return static_cast<std::size_t>(-1);
+        return -1;
     }
 };

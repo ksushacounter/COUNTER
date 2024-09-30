@@ -1,14 +1,21 @@
+#include <gtest/gtest.h>
+#include "Table.h" 
 
-#include "task1.h"
-#include "gtest/gtest.h"
 
-namespace {
+TEST(TableTest, fall) {
+    table<int, std::string> myTable;
 
-// TODO: переименовать тесты, написать реализации
-TEST(TaskTest, plus) {
-    using task::plus;
-
-    EXPECT_EQ(plus(2, 3), 5);
+    myTable[3] = "Three"; 
+    myTable[1] = "One";   
+    myTable[2] = "Two";   
+    
+    EXPECT_EQ(myTable[2], "Two"); 
+    
+    std::size_t index = myTable.search(1); 
+    EXPECT_EQ(index, (std::size_t)-1); 
 }
 
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
