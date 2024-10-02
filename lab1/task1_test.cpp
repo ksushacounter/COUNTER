@@ -9,11 +9,11 @@ TEST(TableTest, fall) {
     myTable[1] = "One";   
     myTable[2] = "Two";   
     
+    EXPECT_EQ(myTable[1], "One"); 
     EXPECT_EQ(myTable[2], "Two"); 
+    EXPECT_EQ(myTable[3], "Three"); 
     
-    std::size_t index = myTable.search(3); 
-    EXPECT_NE(index, -1);  
-    EXPECT_EQ(myTable[index], "Three");
+    
 }
 
 int main(int argc, char **argv) {

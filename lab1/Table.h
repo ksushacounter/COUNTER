@@ -18,7 +18,7 @@ public:
     table()
         : array(new line[10]), count(0), capacity(10) {}
 
-    table(const table &other)//капасити копируем в сайз
+    table(const table &other)
         : count(other.count), capacity(other.capacity)
     {
         array = new line[capacity];
@@ -56,18 +56,22 @@ public:
         return count;
     }
 
-    value &operator[](const KEY &key)//
+    value &operator[](const KEY &key)
     {
         std::size_t index = search(key);
-        if (index != -1)
+        if (index < count && array[index].key == key)
         {
             return array[index].val;
         }
         memory();
         
-        array[count].key = key; 
-        array[count].val = value(); 
-        return array[count++].val;
+        for (std::size_t i = count; i > index; --i) {
+            array[i] = array[i - 1];
+        }
+        array[index].key = key; 
+        array[index].val = value(); 
+        ++count;
+        return array[index].val;
     }
 
     bool contains(const KEY &key) const
@@ -119,7 +123,6 @@ private:
         return true;
     }
 
-public:
     std::size_t search(const KEY &key) const
     {
         std::size_t f = 0, l = count;
@@ -139,6 +142,6 @@ public:
                 return m;
             }
         }
-        return -1;
+        return f;
     }
 };
