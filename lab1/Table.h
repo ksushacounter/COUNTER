@@ -51,7 +51,7 @@ public:
         return *this;
     }
 
-    std::size_t current_size(void)
+    std::size_t current_size()
     {
         return count;
     }
