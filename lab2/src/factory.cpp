@@ -7,6 +7,11 @@ std::unique_ptr<converter> converter_factory::create_converter(const std::string
 if(type == "mute"){
     return std::make_unique<mute>();
 }
+
+else if(type == "bass_boost"){
+    return std::make_unique<bass_boost>();
+}
+
 else{
     throw std::invalid_argument("unknow converter:(");
 }

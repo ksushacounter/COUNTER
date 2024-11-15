@@ -13,3 +13,8 @@ class mute : public converter {
 public:
     void convert(std::vector<char>& audioData, int byteRate, int startSecond, int endSecond) override;
 };
+
+class bass_boost : public converter {
+    public:
+    void convert(std::vector<char>& data, int gain, int byteRate, int startSecond, int endSecond);
+}
