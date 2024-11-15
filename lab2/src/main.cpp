@@ -31,8 +31,8 @@ int main()
         std::cout << wav.get_header().bitsPerSample << std::endl; 
         
 
-        std::unique_ptr<converter> converter = converter_factory::create_converter("mute");
-        converter->convert(data, byteRate, 1, 5);
+        std::unique_ptr<converter> converter = converter_factory::create_converter("bass_boost");
+        converter->convert(data, byteRate, 1, 5, 10);
         
         wav.save("C:\\Users\\garku\\git\\lab2\\my.wav");
         std::cout << "Done" << std::endl;
