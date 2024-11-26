@@ -12,6 +12,10 @@ else if(type == "bass_boost"){
     return std::make_unique<bass_boost>();
 }
 
+else if(type == "mix"){
+    return std::make_unique<mix>();
+}
+
 else{
     throw std::invalid_argument("unknow converter:(");
 }

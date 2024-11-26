@@ -14,18 +14,18 @@ void WAV::load(const std::string &input_file)
     std::ifstream file(input_file, std::ios::binary);
     if (!file)
     {
-        throw std::runtime_error("bad input file:(");
+        throw std::runtime_error("Failed to open input file: " + input_file);
     }
+
     file.read(reinterpret_cast<char *>(&header), sizeof(Header));
-    for (;;)
+
+    while (file.read(reinterpret_cast<char *>(&data_chunk), sizeof(Subchunk)))
     {
-        file.read(reinterpret_cast<char *>(&data_chunk), sizeof(Subchunk));
-        std::cout << data_chunk.subchunk2Id << std::endl << data_chunk.subchunk2Size << std::endl; 
-        if (data_chunk.subchunk2Id == 0x61746164)
+        uint32_t data_word = 0x61746164;
+        if (data_chunk.subchunk2Id == data_word) 
         {
-            data.resize(data_chunk.subchunk2Size);
-            file.read(data.data(), data_chunk.subchunk2Size);
-            file.close();
+            data.resize(data_chunk.subchunk2Size / sizeof(int16_t));
+            file.read(reinterpret_cast<char *>(data.data()), data_chunk.subchunk2Size);
             break;
         }
         else
@@ -33,17 +33,27 @@ void WAV::load(const std::string &input_file)
             file.seekg(data_chunk.subchunk2Size, std::ios_base::cur);
         }
     }
+
+    if (file.fail() && !file.eof())
+    {
+        throw std::runtime_error("Error while reading the file: " + input_file);
+    }
+
+    file.close();
 }
 
-    void WAV::save(const std::string &output_file)
+
+void WAV::save(const std::string &output_file)
+{
+    std::ofstream file(output_file, std::ios::binary);
+    if (!file)
     {
-        std::ofstream file(output_file, std::ios::binary);
-        if (!file)
-        {
-            throw std::runtime_error("bad outpit:(");
-        }
-        file.write(reinterpret_cast<const char *>(&header), sizeof(Header));
-        file.write(reinterpret_cast<const char *>(&data_chunk), sizeof(Subchunk));
-        file.write(data.data(), data.size());
-        file.close();
+        throw std::runtime_error("bad outpit:(");
     }
+    file.write(reinterpret_cast<const char *>(&header), sizeof(Header));
+    file.write(reinterpret_cast<const char *>(&data_chunk), sizeof(Subchunk));
+
+    
+    file.write(reinterpret_cast<char*> (data.data()), data.size() * sizeof(uint16_t));
+    file.close();
+}

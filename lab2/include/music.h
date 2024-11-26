@@ -1,32 +1,47 @@
+#pragma once
 #include <vector> 
 #include <string>
-
+#include <stdint.h>
 
 struct Header{
     char id[4];
-    int size;
+    uint32_t size;
     char format[4];
     char subchunk1ID[4];      
-    int subchunk1Size;   
-    int audioFormat;      
-    int numChannels;     
-    int sampleRate;    //частота дискретизации  
-    int byteRate;      
-    int blockAlign;  
-    int bitsPerSample;
-    char subchunk2Id[4];
-    int subchunk2Size;
+    uint32_t subchunk1Size;   
+    uint16_t audioFormat;      
+    uint16_t numChannels;     
+    uint32_t sampleRate;    //частота дискретизации  
+    uint32_t byteRate;      //байты в секунду
+    uint16_t blockAlign;  
+    uint16_t bitsPerSample;
+};
+struct Subchunk{
+    uint32_t subchunk2Id;
+    uint32_t subchunk2Size;   //размер файла
+};
+struct Comand{
+    std::string name;
+    int parametr1;
+    int parametr2;
 };
 
-class wav{
+class WAV{
 private:
     Header header;
-    std::vector<char> data;
+    Subchunk data_chunk;
+    std::vector<int16_t> data;
     void load(const std::string& input_file);
 
 public: 
-    wav(const std::string& input_file);
-    void mute(int start_sec, int end_sec);
-    void save(std::string& output_file);
-
+    WAV(const std::string& input_file);
+    void save(const std::string& output_file);
+    const Header& get_header() const {
+         return header; 
+    }
+    
+    std::vector<int16_t>& get_data(){ 
+        return data; 
+    }
 };
+
