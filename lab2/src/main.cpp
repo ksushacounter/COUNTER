@@ -4,30 +4,23 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <iostream>
+#include <vector>
+#include <memory>
 #include <sstream>
 
-int main()
+int main(int argc, char* argv[])
 {
-    int number_files;
-    std::string path;
-    std::vector<std::unique_ptr<FORMAT>> files;
-    std::cin >> number_files;
+    std::string txt_path = argv[1];  
+    std::string output_path = argv[2];  
 
-    for (int i = 0; i < number_files; i++)
+    std::vector<std::unique_ptr<FORMAT>> files;
+
+    for (int i = 3; i < argc; ++i)
     {
-        std::string path;
-        std::cin >> path;
+        std::string path = argv[i];
         auto file = format_factory::create_format(path);
         files.push_back(std::move(file));
     }
-
-
-    std::string output_path;
-    std::cin >> output_path;
-
-    std::string txt_path;
-    std::cin >> txt_path;
 
     std::ifstream txt_file(txt_path);
     std::string line;
@@ -35,7 +28,8 @@ int main()
 
     if (!txt_file.is_open())
     {
-        throw std::runtime_error("Failed to open config file: " + txt_path);
+        std::cerr << "Failed to open config file: " << txt_path << std::endl;
+        return 1;
     }
 
     Comand comand;
@@ -45,50 +39,26 @@ int main()
         while (std::getline(txt_file, line))
         {
             std::stringstream ss(line);
-
             ss >> comand.name >> comand.parametr1 >> comand.parametr2;
-
             comands.push_back(comand);
             count++;
         }
         txt_file.close();
+
         for (int i = 0; i < count; i++)
         {
             std::unique_ptr<converter> converter = converter_factory::create_converter(comands[i].name);
             converter->convert(files, comands, output_path, i);
         }
+        files[0]->save(output_path);
+
+
     }
-    catch (const std::exception &bad)
+    catch (const std::exception& bad)
     {
         std::cerr << "Error: " << bad.what() << std::endl;
         return 1;
     }
+
     return 0;
 }
-
-// int main()
-// {
-//     WAV wav("C:\\Users\\garku\\git\\lab2\\funkorama.wav");
-//     WAV wav2("C:\\Users\\garku\\git\\lab2\\severe_tire_damage.wav");
-
-//     try
-//     {
-//         std::vector<char> &data = wav.get_data();
-//         std::vector<char> &data2 = wav2.get_data();
-
-//         int byteRate = wav.get_header().byteRate;
-//         int sampleRate = wav.get_header().sampleRate;
-
-//         std::unique_ptr<converter> converter = converter_factory::create_converter("bass_boost");
-//         converter->convert(data, data2, byteRate, sampleRate, 1, 5, 150);
-
-//         wav.save("C:\\Users\\garku\\git\\lab2\\my.wav");
-//         std::cout << "Done" << std::endl;
-//     }
-//     catch (const std::exception &bad)
-//     {
-//         std::cerr << "Error: " << bad.what() << std::endl;
-//         return 1;
-//     }
-//     return 0;
-// }

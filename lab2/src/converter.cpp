@@ -19,7 +19,7 @@ void mute::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Coma
     int end_sample = end_sec * sampleRate;
 
     std::fill(data.begin() + start_sample, data.begin() + end_sample, 0);
-    file.save(output_path);
+    // file.save(output_path);
     std::cout << "Done:)" << std::endl;
 }
 
@@ -121,7 +121,7 @@ void bass_boost::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vecto
 
     std::copy(filteredSamples.begin(), filteredSamples.end(), data.begin());
 
-    file.save(output_path);
+    // file.save(output_path);
     std::cout << "Done:)" << std::endl;
 }
 
@@ -131,13 +131,13 @@ void mix::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Coman
     int second_file = comands[i].parametr1; 
     int start_sec = comands[i].parametr2;  
 
-    FORMAT& wav = *files[0];              
-    FORMAT& wav2 = *files[second_file - 1]; 
+    FORMAT& file = *files[0];              
+    FORMAT& file2 = *files[second_file - 1]; 
 
-    std::vector<int16_t>& data = wav.get_data();
-    std::vector<int16_t>& data2 = wav2.get_data();
+    std::vector<int16_t>& data = file.get_data();
+    std::vector<int16_t>& data2 = file2.get_data();
 
-    int sampleRate = wav.get_header().sampleRate;
+    int sampleRate = file.get_header().sampleRate;
 
     int start_sample = start_sec * sampleRate;
 
@@ -165,5 +165,6 @@ void mix::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Coman
         }
     }
 
-    wav.save(output_path);
+    // file.save(output_path);
+    std::cout << "Done:)" << std::endl;
 }
