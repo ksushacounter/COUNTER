@@ -26,7 +26,20 @@ struct Comand{
     int parametr2;
 };
 
-class WAV{
+class FORMAT
+{
+public:
+    virtual ~FORMAT() = default;
+    virtual void save(const std::string &output_file) = 0;
+
+    virtual const Header &get_header() const = 0;
+    virtual std::vector<int16_t> &get_data() = 0;
+    virtual void load(const std::string &input_file) = 0;
+    virtual int get_start_sample(int start_sec) = 0;
+    virtual int get_end_sample(int end_sec) = 0;
+};
+
+class WAV : public FORMAT{
 private:
     Header header;
     Subchunk data_chunk;
@@ -35,13 +48,21 @@ private:
 
 public: 
     WAV(const std::string& input_file);
-    void save(const std::string& output_file);
-    const Header& get_header() const {
+    void save(const std::string& output_file) override;
+    const Header& get_header() const override{
          return header; 
     }
     
-    std::vector<int16_t>& get_data(){ 
+    std::vector<int16_t>& get_data() override{ 
         return data; 
+    }
+    int get_start_sample(int start_sec) override{
+        int start_sample = start_sec * get_header().sampleRate;
+        return start_sample;
+    }
+    int get_end_sample(int end_sec) override{
+        int end_sample = end_sec * get_header().sampleRate;
+        return end_sample;
     }
 };
 

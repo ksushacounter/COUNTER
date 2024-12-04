@@ -5,28 +5,24 @@
 #include <cmath>
 #include <stdint.h>
 #include <string>
+#include <memory>
 
-void mute::convert(std::vector<class WAV>& input_WAV, std::vector<Comand> comands, std::string output_path, int i)
-{
-    WAV& wav = input_WAV[0];
-    std::vector<int16_t>& data = wav.get_data();
-    int byteRate = wav.get_header().byteRate;
-    int sampleRate = wav.get_header().sampleRate;
+void mute::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, const std::string output_path, int i) {
+    
+    FORMAT& file = *files[0]; 
+    std::vector<int16_t>& data = file.get_data();
+    int sampleRate = file.get_header().sampleRate;
 
     int start_sec = comands[i].parametr1;
     int end_sec = comands[i].parametr2;
-    int start_byte = start_sec * byteRate;
-    int end_byte = end_sec * byteRate;
+    int start_sample = start_sec * sampleRate;
+    int end_sample = end_sec * sampleRate;
 
-    std::cout << byteRate<< " " << sampleRate<< " " << start_sec<< " " << end_sec<< " " << start_byte << "  " << end_byte << std::endl;
-    if (start_byte < 0 || end_byte > data.size() || start_byte >= end_byte)
-    {
-        throw std::invalid_argument("bad range:(");
-    }
-    std::fill(data.begin() + start_byte/2, data.begin() + end_byte/2, 0);
-    wav.save(output_path);
-    std::cout << "Done" << std::endl;
+    std::fill(data.begin() + start_sample, data.begin() + end_sample, 0);
+    file.save(output_path);
+    std::cout << "Done:)" << std::endl;
 }
+
 
 // void bass_boost::convert(std::vector<char>& data, int byteRate, int start_sec, int end_sec, int gain){
 //     int start_byte = start_sec * byteRate;
@@ -65,113 +61,109 @@ void mute::convert(std::vector<class WAV>& input_WAV, std::vector<Comand> comand
 //     fftw_free(out);
 // }
 
-// void bass_boost::convert(std::vector<char>& data, int byteRate, int start_sec, int end_sec, int gain){
-//     int slice = 250;
-//     double boost = gain / 100;
 
-//     for (size_t i = 1; i < data.size(); i++) {
-//         if (data[i] < 0) {
-//             data[i] = static_cast<int16_t>(data[i] * gain);
-//         } else {
-//             data[i] = static_cast<int16_t>(data[i] * gain);
-//         }
-//     }
-// }
+void bass_boost::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, const std::string output_path, int i) {
+    if (files.empty()) {
+        throw std::runtime_error("No files provided.");
+    }
 
-void bass_boost::convert(std::vector<class WAV>& input_WAV, std::vector<Comand> comands, std::string output_path, int i)
-{
-    int slice = 250;
-    WAV& wav = input_WAV[0];
-    std::vector<int16_t>& data = wav.get_data();
-    int byteRate = wav.get_header().byteRate;
-    int sampleRate = wav.get_header().sampleRate;
+    FORMAT& file = *files[0];  
+
+    std::vector<int16_t>& data = file.get_data();
+    int byteRate = file.get_header().byteRate;
+    int sampleRate = file.get_header().sampleRate;
     int gain = comands[i].parametr1;
-    
+
+    int start_sec = comands[i].parametr1;  
+    int end_sec = comands[i].parametr2;    
+
+    int start_sample = start_sec * byteRate / 2;  
+    int end_sample = end_sec * byteRate / 2;
+
+    if (start_sample < 0 || end_sample > data.size() || start_sample >= end_sample) {
+        throw std::invalid_argument("Invalid sample range.");
+    }
+
     size_t numSamples = data.size();
+    const int filterSize = 101;  
+    const int slice = 250;       
 
-
-    int filterSize = 101;
     std::vector<double> filter(filterSize);
-
-    // коэффициенты
     double normCutoff = static_cast<double>(slice) / sampleRate;
-    for (int i = 0; i < filterSize; i++)
-    {
-        int n = i - filterSize / 2;
-        if (n == 0)
-        {
-            filter[i] = 2 * normCutoff;
+
+    for (int j = 0; j < filterSize; j++) {
+        int n = j - filterSize / 2;
+        if (n == 0) {
+            filter[j] = 2 * normCutoff;
+        } else {
+            filter[j] = std::sin(2 * M_PI * normCutoff * n) / (M_PI * n);
         }
-        else
-        {
-            filter[i] = std::sin(2 * M_PI * normCutoff * n) / (M_PI * n);
-        }
-        // окно Хэмминга
-        filter[i] *= 0.54 - 0.46 * std::cos(2 * M_PI * i / (filterSize - 1));
+        filter[j] *= 0.54 - 0.46 * std::cos(2 * M_PI * j / (filterSize - 1));
     }
 
     double sum = 0.0;
-    for (double coeff : filter)
-    {
-        sum += coeff;
-    }
-    for (double &coeff : filter)
-    {
-        coeff /= sum;
+    for (int j = 0; j < filterSize; j++) {
+        sum += filter[j];
     }
 
-    std::vector<int16_t> filteredSamples(numSamples, 0);
-    for (size_t i = filterSize / 2; i < numSamples - filterSize / 2; i++)
-    {
+    for (int j = 0; j < filterSize; j++) {
+        filter[j] /= sum;
+    }
+
+    std::vector<int16_t> filteredSamples(data.begin(), data.end()); 
+    for (size_t i = start_sample + filterSize / 2; i < end_sample - filterSize / 2; i++) {
         double filteredValue = 0.0;
-        for (size_t j = 0; j < filterSize; j++)
-        {
+        for (size_t j = 0; j < filterSize; j++) {
             filteredValue += data[i - filterSize / 2 + j] * filter[j];
         }
         filteredSamples[i] = static_cast<int16_t>(filteredValue * (1.0 + gain / 100.0));
     }
+
     std::copy(filteredSamples.begin(), filteredSamples.end(), data.begin());
-    wav.save(output_path);
-    std::cout << "Done" << std::endl;
+
+    file.save(output_path);
+    std::cout << "Done:)" << std::endl;
 }
 
-void mix::convert(std::vector<class WAV>& input_WAV, std::vector<Comand> comands, std::string output_path, int i)
+
+void mix::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, const std::string output_path, int i)
 {
-    int second_file = comands[i].parametr1;
-    std::cout << second_file << std::endl;
-    WAV& wav = input_WAV[0];
-    WAV& wav2 = input_WAV[second_file - 1];
+    int second_file = comands[i].parametr1; 
+    int start_sec = comands[i].parametr2;  
+
+    FORMAT& wav = *files[0];              
+    FORMAT& wav2 = *files[second_file - 1]; 
 
     std::vector<int16_t>& data = wav.get_data();
-    std::vector<int16_t> data2 = wav2.get_data();
+    std::vector<int16_t>& data2 = wav2.get_data();
 
-    int byteRate = wav.get_header().byteRate;
     int sampleRate = wav.get_header().sampleRate;
 
-    int start_sec = comands[i].parametr2;
-    int start_byte = start_sec * byteRate/2;
+    int start_sample = start_sec * sampleRate;
 
-    if (start_byte < 0)
+    if (start_sample < 0)
     {
         throw std::invalid_argument("bad range:(");
     }
 
-    for (int j = start_byte/2; j < data2.size() && j < data.size(); j++)
+    for (int j = start_sample; j < data2.size() && j < data.size(); j++)
     {
-        int32_t sum = static_cast<int32_t>(data[j]) + static_cast<int32_t>(data2[j - start_byte / 2]);
-        int uint16_t_border = 32767;
-        if (data[j] > uint16_t_border)
+        int32_t sum = static_cast<int32_t>(data[j]) + static_cast<int32_t>(data2[j - start_sample]);
+
+        const int16_t uint16_t_border = 32767;
+        if (sum > uint16_t_border)
         {
             data[j] = uint16_t_border;
         }
-        if (data[j] < -uint16_t_border)
+        else if (sum < -uint16_t_border)
         {
             data[j] = -uint16_t_border;
         }
-        else {
-            data[j] = static_cast<int16_t> (sum);
+        else
+        {
+            data[j] = static_cast<int16_t>(sum);
         }
     }
+
     wav.save(output_path);
-    std::cout << "Done" << std::endl;
 }

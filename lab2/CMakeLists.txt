@@ -10,8 +10,9 @@ include_directories(include)
 set(SOURCES
     src/main.cpp
     src/music.cpp
-    src/factory.cpp
+    src/convert_factory.cpp
     src/converter.cpp
+    src/format_factory.cpp
 )
 
 

@@ -1,5 +1,6 @@
 #include "music.h"
-#include "factory.h"
+#include "convert_factory.h"
+#include "format_factory.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -9,15 +10,19 @@
 int main()
 {
     int number_files;
-    std::vector<WAV> input_WAV;
+    std::string path;
+    std::vector<std::unique_ptr<FORMAT>> files;
     std::cin >> number_files;
+
     for (int i = 0; i < number_files; i++)
     {
         std::string path;
         std::cin >> path;
-        WAV wav(path);
-        input_WAV.emplace_back(wav);
+        auto file = format_factory::create_format(path);
+        files.push_back(std::move(file));
     }
+
+
     std::string output_path;
     std::cin >> output_path;
 
@@ -50,7 +55,7 @@ int main()
         for (int i = 0; i < count; i++)
         {
             std::unique_ptr<converter> converter = converter_factory::create_converter(comands[i].name);
-            converter->convert(input_WAV, comands, output_path, i);
+            converter->convert(files, comands, output_path, i);
         }
     }
     catch (const std::exception &bad)
