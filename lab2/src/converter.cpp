@@ -7,7 +7,7 @@
 #include <string>
 #include <memory>
 
-void mute::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, const std::string output_path, int i) {
+void mute::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, int i) {
     
     FORMAT& file = *files[0]; 
     std::vector<int16_t>& data = file.get_data();
@@ -62,7 +62,7 @@ void mute::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Coma
 // }
 
 
-void bass_boost::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, const std::string output_path, int i) {
+void bass_boost::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, int i) {
     if (files.empty()) {
         throw std::runtime_error("No files provided.");
     }
@@ -126,7 +126,7 @@ void bass_boost::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vecto
 }
 
 
-void mix::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, const std::string output_path, int i)
+void mix::convert(std::vector<std::unique_ptr<FORMAT>>& files, std::vector<Comand>& comands, int i)
 {
     int second_file = comands[i].parametr1; 
     int start_sec = comands[i].parametr2;  

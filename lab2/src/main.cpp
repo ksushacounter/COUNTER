@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
         for (int i = 0; i < count; i++)
         {
             std::unique_ptr<converter> converter = converter_factory::create_converter(comands[i].name);
-            converter->convert(files, comands, output_path, i);
+            converter->convert(files, comands, i);
         }
         files[0]->save(output_path);
 
