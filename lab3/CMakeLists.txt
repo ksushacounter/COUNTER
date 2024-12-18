@@ -17,7 +17,9 @@ if(WIN32 OR MSVC)
     FetchContent_MakeAvailable(PDcurses)
 endif()
 
-add_executable(${exe_name} src/main.cpp)
+add_executable(${exe_name} src/main.cpp src/start_game.cpp src/objects.cpp)
+include_directories(include)
+
 
 if(WIN32 OR MSVC)
     target_link_libraries(${exe_name} PDcurses)
