@@ -1,169 +1,148 @@
 #include "objects.h"
+#include <iostream>
 
-void player::act(int n, std::vector<std::vector<std::string>> objects_position)
+player::player(int x, int y, int min_x, int min_y, int max_x, int max_y)
+    : x(x), y(y), min_x(min_x), min_y(min_y), max_x(max_x), max_y(max_y) {};
+
+void player::display()
 {
-    if (n == 1)
-    {
-        int bullet_x = x;
-        int bullet_y = y - 1;
-        mvaddch(bullet_y, bullet_x, ACS_LANTERN);
-        for (int i = bullet_y; i > min_y - 1; i--)
-        {
-            if (objects_position[i][bullet_x] == "wall")
-            {
-                break;
-            }
-            mvaddch(i, bullet_x, ACS_LANTERN);
-            refresh();
-            napms(80);
-            mvaddch(i, bullet_x, ' ');
-        }
-    }
+    mvaddch(y, x, ACS_BLOCK);
+}
 
-    if (n == 2)
-    {
-        int bullet_x = x;
-        int bullet_y = y + 1;
-        mvaddch(bullet_y, bullet_x, ACS_LANTERN);
-        for (int i = bullet_y; i < max_y + 1; i++)
-        {
-            if (objects_position[i][bullet_x] == "wall")
-            {
-                break;
-            }
-            mvaddch(i, bullet_x, ACS_LANTERN);
-            refresh();
-            napms(80);
-            mvaddch(i, bullet_x, ' ');
-        }
-    }
+void player::act(int key)
+{
+    int bullet_x = x;
+    int bullet_y = y;
 
-    if (n == 3)
+    if (bullet_x >= min_x && bullet_x <= max_x && bullet_y >= min_y && bullet_y <= max_y)
     {
-        int bullet_x = x + 1;
-        int bullet_y = y;
-        mvaddch(bullet_y, bullet_x, ACS_LANTERN);
-        for (int i = bullet_x; i < max_x; i++)
-        {
-            if (objects_position[bullet_y][i] == "wall")
-            {
-                break;
-            }
-            mvaddch(bullet_y, i, ACS_LANTERN);
-            refresh();
-            napms(25);
-            mvaddch(bullet_y, i, ' ');
-        }
-    }
+        bullets.push_back(new bullet(bullet_x, bullet_y, key, min_x, min_y, max_x, max_y));
+        std::cout << 20 << std::endl;
 
-    if (n == 4)
-    {
-        int bullet_x = x - 1;
-        int bullet_y = y;
-        mvaddch(bullet_y, bullet_x, ACS_LANTERN);
-        for (int i = bullet_x; i > min_x; i--)
-        {
-            if (objects_position[bullet_y][i] == "wall")
-            {
-                break;
-            }
-            mvaddch(bullet_y, i, ACS_LANTERN);
-            refresh();
-            napms(25);
-            mvaddch(bullet_y, i, ' ');
-        }
     }
 }
 
-void player::move(std::vector<std::vector<std::string>> objects_position)
+void player::update(std::vector<std::vector<std::string>> objects_position, int ch)
 {
-    keypad(stdscr, TRUE);
-    curs_set(0);
-    x = 37;
-    y = 14;
-    min_x = 36;
-    max_x = 93;
-    min_y = 2;
-    max_y = 14;
 
-    mvaddch(y, x, ACS_BLOCK);
-    refresh();
-    int ch;
     int begin_coordinate;
 
-    while ((ch = getch()) != 'q')
+    switch (ch)
     {
-        switch ((ch))
+
+    case KEY_UP:
+        begin_coordinate = y;
+        y = y > min_y ? y - 1 : y;
+        if (objects_position[y][x] == "wall")
         {
-        case KEY_UP:
-            begin_coordinate = y;
-            y = y > min_y ? y - 1 : y;
-            if (objects_position[y][x] == "wall")
-            {
-                y = begin_coordinate;
-                break;
-            }
-            mvaddch(begin_coordinate, x, ' ');
-            mvaddch(y, x, ACS_BLOCK);
+            y = begin_coordinate;
             break;
-
-        case KEY_DOWN:
-            begin_coordinate = y;
-            y = y < max_y ? y + 1 : y;
-            if (objects_position[y][x] == "wall")
-            {
-                y = begin_coordinate;
-                break;
-            }
-            mvaddch(begin_coordinate, x, ' ');
-            mvaddch(y, x, ACS_BLOCK);
-            break;
-
-        case KEY_RIGHT:
-            begin_coordinate = x;
-            x = x < max_x ? x + 1 : x;
-            if (objects_position[y][x] == "wall")
-            {
-                x = begin_coordinate;
-                break;
-            }
-            mvaddch(y, begin_coordinate, ' ');
-            mvaddch(y, x, ACS_BLOCK);
-            break;
-
-        case KEY_LEFT:
-            begin_coordinate = x;
-            x = x > min_x ? x - 1 : x;
-            if (objects_position[y][x] == "wall")
-            {
-                x = begin_coordinate;
-                break;
-            }
-            mvaddch(y, begin_coordinate, ' ');
-            mvaddch(y, x, ACS_BLOCK);
-            break;
-
-        case 'w':
-            act(1, objects_position);
-            break;
-
-        case 's':
-            act(2, objects_position);
-            break;
-
-        case 'd':
-            act(3, objects_position);
-            break;
-
-        case 'a':
-            act(4, objects_position);
-            break;
-
-        default:
-            mvaddch(y, x, ' ');
-            mvaddch(y, x, ACS_BLOCK);
-            break;
-            refresh();
         }
+        break;
+
+    case KEY_DOWN:
+        begin_coordinate = y;
+        y = y < max_y ? y + 1 : y;
+        if (objects_position[y][x] == "wall")
+        {
+            y = begin_coordinate;
+            break;
+        }
+        break;
+
+    case KEY_RIGHT:
+        begin_coordinate = x;
+        x = x < max_x ? x + 1 : x;
+        if (objects_position[y][x] == "wall")
+        {
+            x = begin_coordinate;
+            break;
+        }
+        break;
+
+    case KEY_LEFT:
+        begin_coordinate = x;
+        x = x > min_x ? x - 1 : x;
+        if (objects_position[y][x] == "wall")
+        {
+            x = begin_coordinate;
+        }
+        break;
+
+    case 'w':
+        act(1);
+        break;
+
+    case 's':
+        act(2);
+        break;
+
+    case 'd':
+        act(3);
+        break;
+
+    case 'a':
+        act(4);
+        break;
+
+    default:
+        break;
+    }
+}
+
+bullet::bullet(int x, int y, int key, int min_x, int min_y, int max_x, int max_y)
+    : x(x), y(y), key(key), min_x(min_x), min_y(min_y), max_x(max_x), max_y(max_y), is_active(true) {}
+
+void bullet::display()
+{
+
+    mvaddch(y, x, ACS_LANTERN);
+}
+
+void bullet::update(std::vector<std::vector<std::string>> objects_position, int ch)
+{
+    switch (key)
+    {
+    case 1:
+        if (y < max_y && y > min_y &&objects_position[y - 1][x] != "wall")
+        {
+            y -= 1;
+            std::cout << y << ' ' << min_y << ' ' <<max_y << objects_position[y - 1][x] << std::endl;
+        }
+        else
+        {
+            is_active = false;
+        }
+        break;
+    case 2:
+        if (y < max_y && y > min_y && objects_position[y + 1][x] != "wall")
+        {
+            y += 1;
+        }
+        else
+        {
+            is_active = false;
+        }
+        break;
+    case 3:
+        if (x < max_x && x > min_x && objects_position[y][x + 1] != "wall")
+        {
+            x += 1;
+        }
+        else
+        {
+            is_active = false;
+        }
+        break;
+    case 4:
+        if (x > min_x && x < max_x && objects_position[y][x - 1] != "wall")
+        {
+            x -= 1;
+        }
+        else
+        {
+            is_active = false;
+        }
+        break;
     }
 }

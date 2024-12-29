@@ -17,7 +17,7 @@ if(WIN32 OR MSVC)
     FetchContent_MakeAvailable(PDcurses)
 endif()
 
-add_executable(${exe_name} src/main.cpp src/start_game.cpp src/objects.cpp)
+add_executable(${exe_name} src/main.cpp src/start_game.cpp src/objects.cpp src/game_engine.cpp)
 include_directories(include)
 
 

@@ -1,19 +1,16 @@
 #include <iostream>
 #include <string>
-#include <start_game.h>
 #include <curses.h>
-#include <objects.h>
-
+#include <game_engine.h>
 
 int main()
 {
     initscr();
     cbreak();
     noecho();
+    keypad(stdscr, TRUE); 
 
-    start start_game;
-    player player;
-    start_game.intro();
-    std::vector<std::vector<std::string>> objects_position = start_game.map();
-    player.move(objects_position);
+
+    engine engine;
+    engine.run();
 }
