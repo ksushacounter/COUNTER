@@ -1,6 +1,8 @@
 package ru.nsu.garkusha.lab1;
 
 
+import java.util.Arrays;
+
 public class NumberGenerator {
     int[] numbers;
     int count = 0;
@@ -9,7 +11,7 @@ public class NumberGenerator {
         numbers = new int[4];
     }
 
-    int[] numberGeneration() {
+    String numberGeneration() {
         while (count != 4) {
             int current_number = (int) (Math.random() * 9) + 1;
             int flag = 0;
@@ -23,6 +25,6 @@ public class NumberGenerator {
                 count++;
             }
         }
-        return numbers;
+        return Arrays.toString(numbers).replaceAll("[^1-9]","");
     }
 }
