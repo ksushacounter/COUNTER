@@ -21,11 +21,11 @@ class Main {
                 System.out.println("вы не угадали!:(");
                 System.out.println("коров: " + Checker.cows + " быков: " + Checker.bulls);
 
-//                System.out.println("догадка: ");
-//                System.out.println(guess);
-//
-//                System.out.println("загаданное число: ");
-//                System.out.println(numbers);
+                System.out.println("догадка: ");
+                System.out.println(guess);
+
+                System.out.println("загаданное число: ");
+                System.out.println(numbers);
             }
             else{
                 break;

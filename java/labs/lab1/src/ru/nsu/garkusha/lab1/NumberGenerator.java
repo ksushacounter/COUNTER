@@ -7,13 +7,13 @@ public class NumberGenerator {
     int[] numbers;
     int count = 0;
 
-    NumberGenerator() {
+    public NumberGenerator() {
         numbers = new int[4];
     }
 
-    String numberGeneration() {
+    public String numberGeneration() {
         while (count != 4) {
-            int current_number = (int) (Math.random() * 9) + 1;
+            int current_number = (int) (Math.random() * 10) + 1;
             int flag = 0;
             for (int i : numbers) {
                 if(current_number == i){

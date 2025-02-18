@@ -5,7 +5,7 @@ public class Factory {
         return new NumberGeneratorReal(maxN);
     }
 
-    public static PrimeCheckerReal createPrimeChecker() {
+    public static PrimeChecker createPrimeChecker() {
         return new PrimeCheckerReal();
     }
 }

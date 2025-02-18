@@ -1,6 +1,6 @@
 package ru.nsu.garkusha.topic01.task6.model;
 
-public class PrimeCheckerReal {
+class PrimeCheckerReal implements PrimeChecker{
     public boolean isPrime(long n){
         if(n == 2){
             return false;
