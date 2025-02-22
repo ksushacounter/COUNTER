@@ -5,11 +5,11 @@ import ru.nsu.garkusha.stack_calculator.logic.Context;
 
 import java.util.Stack;
 
-public class Minus implements Comand {
+public class Plus implements Comand {
     @Override
     public void operation(Context context){
         Double a = context.getStack().pop();
         Double b = context.getStack().pop();
-        context.getStack().push(a - b);
+        context.getStack().push(a + b);
     }
 }
