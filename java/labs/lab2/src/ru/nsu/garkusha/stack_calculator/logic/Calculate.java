@@ -1,17 +1,16 @@
 package ru.nsu.garkusha.stack_calculator.logic;
 
-import jdk.dynalink.Operation;
-
-import java.util.Stack;
-
 public class Calculate {
 
     public static void pushNumber(double num, Context context) {
         context.getStack().push(num);
     }
 
-    public static void executeComand(String comandName, Context context){
-        Comand comand = ComandFactory.makeComand(comandName);
+    public static Command makeComand(String commandName){
+        return CommandFactory.makeCommand(commandName);
+    }
+
+    public static void executeComand(Command comand, Context context){
         if (comand == null) {
             throw new AssertionError("Ошибка: comand == null!");
         }

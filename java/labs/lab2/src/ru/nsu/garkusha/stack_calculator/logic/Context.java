@@ -1,9 +1,12 @@
 package ru.nsu.garkusha.stack_calculator.logic;
 
-import java.util.Stack;
+import javax.sound.sampled.Line;
+import java.util.*;
 
 public class Context {
     private Stack<Double> stack;
+    private Character defineName;
+    private Map<Character, Double> defines= new HashMap<>();
 
     public Context(){
         this.stack = new Stack<Double>();
@@ -12,4 +15,22 @@ public class Context {
     public Stack<Double> getStack(){
         return stack;
     }
+
+    public void addDefineName(char arg){
+        defineName = arg;
+    }
+    public Character takeDefineName(){
+        return defineName;
+    }
+
+    public void newDefine(Character name, Double num){
+        defines.put(name,num);
+    }
+    public Double getVal(Character name){
+        return defines.get(name);
+    }
+    public Map<Character, Double> getMap(){
+        return defines;
+    }
+
 }

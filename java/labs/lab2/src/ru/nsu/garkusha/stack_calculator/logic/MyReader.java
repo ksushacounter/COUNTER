@@ -1,5 +1,4 @@
 package ru.nsu.garkusha.stack_calculator.logic;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 
@@ -10,42 +9,46 @@ import java.util.List;
 import java.util.Objects;
 
 public class MyReader {
-    public static boolean isDouble(String value){
-        try{
-            Double a = Double.parseDouble(value);
-            return true;
-        }
-        catch (NumberFormatException e){
-            return false;
-        }
-
-
-    }
-    public static void reader(String fileName, Context context){
+    public static String reader(String fileName, Context context){
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;
             List<String[]> values = new ArrayList<String[]>();
+            String currentComand;
 
             while((line = reader.readLine()) != null){
-                if (line.startsWith("#") || line.isEmpty()) {
+                if (line.startsWith("#")) {
                     continue;
                 }
                 values.add(line.split(" "));
             }
 
             for (String[] value : values) {
+                Command comand = Calculate.makeComand(value[0]);
+                currentComand = value[0];
+
                 for (String val : value) {
-                    if(isDouble(val)){
+                    if(Types.isDouble(val)) {
                         context.getStack().push(Double.parseDouble(val));
                     }
-                    else{
-                        Calculate.executeComand(val, context);
+                    else if(Types.isChar(val) && !Objects.equals(currentComand, val)) {
+                        if(context.getMap().containsKey(val.charAt(0))){
+                            context.getStack().push(context.getVal(val.charAt(0)));
+                        }
+                        else {
+                            context.addDefineName(val.charAt(0));
+//                            return ("Define " + val + " not specified");
+                        }
+                    }
+                    else if(!Types.isDouble(val) && !Types.isChar(val) && !Objects.equals(currentComand, val)){
+                        return "Value " + val + " not identified";
                     }
                 }
+                Calculate.executeComand(comand, context);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        return "Everything is ready";
     }
 }

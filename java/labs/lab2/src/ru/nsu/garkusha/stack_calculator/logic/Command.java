@@ -1,7 +1,5 @@
 package ru.nsu.garkusha.stack_calculator.logic;
 
-import java.util.Stack;
-
-public interface Comand {
+public interface Command {
     public void operation(Context context);
 }
