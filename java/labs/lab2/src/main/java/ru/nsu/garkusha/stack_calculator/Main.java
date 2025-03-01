@@ -1,11 +1,10 @@
+package ru.nsu.garkusha.stack_calculator;
+
 import ru.nsu.garkusha.stack_calculator.logic.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-
+//😎🤠🐗🐸🐧🐧🐧🐌🐛🐛🦇🪰🦾👩🏽🎀🎀
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -33,7 +32,7 @@ public class Main {
                     if (Types.isDouble(val)) {
                         context.getStack().push(Double.parseDouble(val));
                     } else if (Types.isChar(val) && !Objects.equals(currentComand, val)) {
-                        if (context.getMap().containsKey(val.charAt(0))) {
+                        if (context.getDefines().containsKey(val.charAt(0))) {
                             context.getStack().push(context.getVal(val.charAt(0)));
                         } else {
                             context.addDefineName(val.charAt(0));

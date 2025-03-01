@@ -3,10 +3,12 @@ package ru.nsu.garkusha.stack_calculator.comands;
 import ru.nsu.garkusha.stack_calculator.logic.Command;
 import ru.nsu.garkusha.stack_calculator.logic.Context;
 
-public class Division implements Command {
+public class SQRT implements Command {
     public void operation(Context context){
+        if (context.getStack().isEmpty()) {
+            throw new IllegalStateException("Not enough operands for SQRT");
+        }
         Double a = context.getStack().pop();
-        Double b = context.getStack().pop();
-        context.getStack().push(a / b);
+        context.getStack().push(Math.sqrt(a));
     }
 }

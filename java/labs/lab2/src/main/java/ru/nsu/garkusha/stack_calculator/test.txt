@@ -1,7 +1,8 @@
 SQRT 16
-/ 4 2
+/ 4 a
+PRINT
 #ffffff
 DEFINE a 4
 / 2 a
 POP
-PUSH 4
+PUSH n

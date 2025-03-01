@@ -31,12 +31,11 @@ public class MyReader {
                         context.getStack().push(Double.parseDouble(val));
                     }
                     else if(Types.isChar(val) && !Objects.equals(currentComand, val)) {
-                        if(context.getMap().containsKey(val.charAt(0))){
+                        if(context.getDefines().containsKey(val.charAt(0))){
                             context.getStack().push(context.getVal(val.charAt(0)));
                         }
                         else {
                             context.addDefineName(val.charAt(0));
-//                            return ("Define " + val + " not specified");
                         }
                     }
                     else if(!Types.isDouble(val) && !Types.isChar(val) && !Objects.equals(currentComand, val)){
@@ -44,11 +43,15 @@ public class MyReader {
                     }
                 }
                 Calculate.executeComand(comand, context);
+                if (context.takeDefineName() != '0'){
+                    throw new IllegalArgumentException("Define " + context.takeDefineName() + " not identified");
+                }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        
         return "Everything is ready";
     }
 }

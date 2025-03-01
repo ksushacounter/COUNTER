@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Context {
     private Stack<Double> stack;
-    private Character defineName;
+    private Character defineName = '0';
     private Map<Character, Double> defines= new HashMap<>();
 
     public Context(){
@@ -22,14 +22,14 @@ public class Context {
     public Character takeDefineName(){
         return defineName;
     }
-
+//😘
     public void newDefine(Character name, Double num){
         defines.put(name,num);
     }
     public Double getVal(Character name){
         return defines.get(name);
     }
-    public Map<Character, Double> getMap(){
+    public Map<Character, Double> getDefines(){
         return defines;
     }
 
