@@ -1,8 +1,0 @@
-SQRT 16
-/ 4 a
-PRINT
-#ffffff
-DEFINE a 4
-/ 2 a
-POP
-PUSH n
