@@ -1,8 +1,8 @@
 package org.example.commands;
 
 
-import org.example.context.Context;
+import org.example.context.Contexts;
 
 public interface Command {
-    public void operation(Context context);
+    void operation(Contexts context);
 }

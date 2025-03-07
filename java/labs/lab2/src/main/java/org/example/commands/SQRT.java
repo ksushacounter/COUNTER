@@ -1,9 +1,9 @@
 package org.example.commands;
 
-import org.example.context.Context;
+import org.example.context.Contexts;
 
 public class SQRT implements Command {
-    public void operation(Context context){
+    public void operation(Contexts context){
         if (context.getStack().isEmpty()) {
             throw new IllegalStateException("Not enough operands for SQRT");
         }

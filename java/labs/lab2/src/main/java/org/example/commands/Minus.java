@@ -1,11 +1,11 @@
 package org.example.commands;
 
 
-import org.example.context.Context;
+import org.example.context.Contexts;
 
 public class Minus implements Command {
     @Override
-    public void operation(Context context){
+    public void operation(Contexts context){
         if (context.getStack().size() < 2) {
             throw new IllegalStateException("Not enough operands for subtraction");
         }

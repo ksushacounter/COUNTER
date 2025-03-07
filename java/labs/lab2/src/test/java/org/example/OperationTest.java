@@ -1,20 +1,23 @@
 package org.example;
 
 import org.example.commands.*;
-import org.example.context.Context;
+import org.example.context.Contexts;
+import org.example.context.MyContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 
 public class OperationTest {
-    private Context context;
+    private Contexts context;
 
     @BeforeEach
     public void setUp() {
-        context = new Context();
+        context = new MyContext();
     }
 
     /*** 🎀 Арифметические операции ***/
@@ -62,9 +65,17 @@ public class OperationTest {
 
     @Test
     public void testPush() {
-        context.getStack().push(555.5);
+        context.addLine(List.of("PUSH 555.5".split(" ")));
         new Push().operation(context);
         Assertions.assertEquals(555.5, context.getStack().pop());
+    }
+
+    @Test
+    public void testPushWithDefine(){
+        context.addLine(List.of("DEFINE a 777.7".split(" ")));
+        new Define().operation(context);
+        context.addLine(List.of("PUSH a".split(" ")));
+        new Push().operation(context);
     }
 
     @Test
@@ -97,8 +108,7 @@ public class OperationTest {
 
     @Test
     public void testDefine() {
-        context.addDefineName('a');
-        context.getStack().push(555.5);
+        context.addLine(List.of("DEFINE a 555.5".split(" ")));
         new Define().operation(context);
         Assertions.assertEquals(555.5, context.getDefines().get('a'));
     }

@@ -14,6 +14,7 @@ public class CommandFactory {
             case "DEFINE" -> new Define();
             case "PRINT" -> new Print();
             case "POP" -> new Pop();
+            case "PUSH" -> new Push();
             default -> null; //exception
         };
     }

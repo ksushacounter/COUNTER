@@ -1,5 +1,13 @@
-/ 2 2
+PUSH 2
+PUSH 2
+/
 DEFINE a 4
-+ a 2
-- 6 3
-SQRT 4
+PUSH a
+PUSH 2
++
+PUSH 6
+PUSH 3
+-
+PUSH 4
+SQRT
+#Hello

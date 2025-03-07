@@ -2,21 +2,21 @@ package org.example.logic;
 
 
 import org.example.commands.Command;
-import org.example.context.Context;
+import org.example.context.Contexts;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class MyReader {
-    public static String reader(String fileName, Context context){
+    public static String reader(String fileName, Contexts context){
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;
             List<String[]> values = new ArrayList<String[]>();
-            String currentComand;
+            Command currentComand;
 
             while((line = reader.readLine()) != null){
                 if (line.startsWith("#")) {
@@ -26,29 +26,10 @@ public class MyReader {
             }
 
             for (String[] value : values) {
-                Command comand = Calculate.makeComand(value[0]);
-                currentComand = value[0];
-
-                for (String val : value) {
-                    if(Types.isDouble(val)) {
-                        context.getStack().push(Double.parseDouble(val));
-                    }
-                    else if(Types.isChar(val) && !Objects.equals(currentComand, val)) {
-                        if(context.getDefines().containsKey(val.charAt(0))){
-                            context.getStack().push(context.getVal(val.charAt(0)));
-                        }
-                        else {
-                            context.addDefineName(val.charAt(0));
-                        }
-                    }
-                    else if(!Types.isDouble(val) && !Types.isChar(val) && !Objects.equals(currentComand, val)){
-                        return "Value " + val + " not identified";
-                    }
-                }
-                Calculate.executeComand(comand, context);
-                if (context.takeDefineName() != '0'){
-                    throw new IllegalArgumentException("Define " + context.takeDefineName() + " not identified");
-                }
+                context.addLine(Arrays.asList(value));
+                Calculate.makeComand(context);
+                currentComand = Calculate.makeComand(context);
+                Calculate.executeComand(currentComand, context);
             }
         }
         catch (IOException e) {

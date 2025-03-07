@@ -13,6 +13,7 @@
       <module name="commands" target="23" />
       <module name="context" target="23" />
       <module name="logic" target="23" />
+      <module name="topic05.task1" target="23" />
       <module name="untitled" target="23" />
     </bytecodeTargetLevel>
   </component>

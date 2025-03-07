@@ -1,10 +1,13 @@
 package org.example;
 import org.example.commands.Command;
-import org.example.context.Context;
+import org.example.context.Contexts;
+import org.example.context.MyContext;
 import org.example.logic.Calculate;
 import org.example.logic.MyReader;
 import org.example.logic.Types;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,7 +15,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Context context = new Context();
+        Contexts context = new MyContext();
 
         String firstLine = scanner.nextLine();
 
@@ -21,37 +24,19 @@ public class Main {
             System.out.println(MyReader.reader(firstLine, context));
         } else {
             String line = "";
-            String[] parsedLine;
-            String currentComand;
+            Command currentComand;
 
             while (!(Objects.equals((line = scanner.nextLine()), "stop"))) {
                 if (line.startsWith("#")) {
                     continue;
                 }
-                parsedLine = line.split(" ");
-                Command command = Calculate.makeComand(parsedLine[0]);
-                currentComand = parsedLine[0];
-
-                for (String val : parsedLine) {
-                    if (Types.isDouble(val)) {
-                        context.getStack().push(Double.parseDouble(val));
-                    } else if (Types.isChar(val) && !Objects.equals(currentComand, val)) {
-                        if (context.getDefines().containsKey(val.charAt(0))) {
-                            context.getStack().push(context.getVal(val.charAt(0)));
-                        } else {
-                            context.addDefineName(val.charAt(0));
-//                            return ("Define " + val + " not specified");
-                        }
-                    } else if (!Types.isDouble(val) && !Types.isChar(val) && !Objects.equals(currentComand, val)) {
-                        System.out.println("Value " + val + " not identified");
-                    }
-                }
-                Calculate.executeComand(command, context);
+                context.addLine(Arrays.asList(line.split(" ")));
+                Calculate.makeComand(context);
+                currentComand = Calculate.makeComand(context);
+                Calculate.executeComand(currentComand, context);
             }
-
-
+            System.out.println("Everything is ready");
         }
-        System.out.println("Everything is ready");
     }
 }
 

@@ -1,23 +1,24 @@
 package org.example.logic;
 
 import org.example.commands.Command;
-import org.example.context.Context;
+import org.example.context.Contexts;
 
 public class Calculate {
 
-    public static void pushNumber(double num, Context context) {
+    public static void pushNumber(double num, Contexts context) {
         context.getStack().push(num);
     }
 
-    public static Command makeComand(String commandName){
+    public static Command makeComand(Contexts context){
+        String commandName = context.getLine().get(0);
         return CommandFactory.makeCommand(commandName);
     }
 
-    public static void executeComand(Command comand, Context context){
-        if (comand == null) {
-            throw new AssertionError("Ошибка: comand == null!");
+    public static void executeComand(Command command, Contexts context){
+        if (command == null) {
+            throw new AssertionError("Ошибка: command == null!");
         }
-        comand.operation(context);
+        command.operation(context);
         System.out.println(context.getStack());
     }
 }
