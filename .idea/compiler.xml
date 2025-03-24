@@ -6,7 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="topic05.task1" />
+        <module name="topic05.task1_var2" />
+        <module name="topic05.task1.var2" />
         <module name="lab2" />
       </profile>
     </annotationProcessing>
@@ -14,8 +15,14 @@
       <module name="classwork" target="23" />
       <module name="commands" target="23" />
       <module name="context" target="23" />
+      <module name="lab3" target="23" />
       <module name="logic" target="23" />
-      <module name="untitled" target="23" />
+      <module name="topic05.task1_var2" target="23" />
+      <module name="topic07.task1" target="23" />
+      <module name="topic5.task1" target="23" />
+      <module name="topic5.task1.var2" target="23" />
+      <module name="topic6.task4" target="23" />
+      <module name="view" target="23" />
     </bytecodeTargetLevel>
   </component>
 </project>

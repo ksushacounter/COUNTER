@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/k.garkusha.iml" filepath="$PROJECT_DIR$/.idea/k.garkusha.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/labs/lab1/lab1.iml" filepath="$PROJECT_DIR$/java/labs/lab1/lab1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lab2.iml" filepath="$PROJECT_DIR$/lab2.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/classwork/topic01.task6/topic01.task6.iml" filepath="$PROJECT_DIR$/java/classwork/topic01.task6/topic01.task6.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/classwork/topic02.task3/topic02.task3.iml" filepath="$PROJECT_DIR$/java/classwork/topic02.task3/topic02.task3.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/classwork/topic03.task1/topic03.task1.iml" filepath="$PROJECT_DIR$/java/classwork/topic03.task1/topic03.task1.iml" />

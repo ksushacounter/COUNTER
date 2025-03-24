@@ -7,11 +7,22 @@
         <option value="$PROJECT_DIR$/java/labs/lab2/pom.xml" />
         <option value="$PROJECT_DIR$/topic05.task1/pom.xml" />
         <option value="$PROJECT_DIR$/classwork/pom.xml" />
+        <option value="$PROJECT_DIR$/labs/lab3/pom.xml" />
+        <option value="$PROJECT_DIR$/java/classwork/untitled/pom.xml" />
+        <option value="$PROJECT_DIR$/java/labs/lab3/lab3/pom.xml" />
+        <option value="$PROJECT_DIR$/topic6.task4/pom.xml" />
+        <option value="$PROJECT_DIR$/view/pom.xml" />
+        <option value="$PROJECT_DIR$/topic06.task1/pom.xml" />
+        <option value="$PROJECT_DIR$/topic5.task1/pom.xml" />
+        <option value="$PROJECT_DIR$/topic5.task1.var2/pom.xml" />
+        <option value="$PROJECT_DIR$/lab3/pom.xml" />
+        <option value="$PROJECT_DIR$/topic05.task1.var2/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/classwork/pom.xml" />
+        <option value="$PROJECT_DIR$/view/pom.xml" />
       </set>
     </option>
   </component>
