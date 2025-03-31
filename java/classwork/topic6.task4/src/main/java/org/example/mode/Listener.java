@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.mode;
 
 import org.example.view.View;
 

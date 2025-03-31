@@ -1,11 +1,10 @@
-package org.example;
+package org.example.model;
 
 import org.example.controller.PlayerController;
-import org.example.model.Player;
-import org.example.model.Tire;
 import org.example.view.Rendering;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -14,9 +13,9 @@ public class Main {
         frame.setSize(400, 675);
 
         Player player = new Player();
-//        List<Tire> tires;
-//        for(int i = )
-        Rendering rendering = new Rendering(player);
+        List<Tire> tires = new ArrayList<Tire>();
+
+        Rendering rendering = new Rendering(player, tires);
         PlayerController playerController = new PlayerController(player, rendering);
 
         frame.add(rendering);

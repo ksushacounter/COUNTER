@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.mode;
 
 public class Random {
     public static String getNumber(){

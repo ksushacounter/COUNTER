@@ -1,5 +1,6 @@
 package org.example.model;
 
+
 public class Tire extends GameObject{
     private int x;
     private int y;
@@ -20,5 +21,4 @@ public class Tire extends GameObject{
     public void moveDown(){
         y -= 10;
     }
-
 }
