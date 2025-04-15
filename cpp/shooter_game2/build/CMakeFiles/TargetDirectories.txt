@@ -1,0 +1,6 @@
+C:/Users/garku/VSCodeProjects/shooter_game2/build/CMakeFiles/game2.dir
+C:/Users/garku/VSCodeProjects/shooter_game2/build/CMakeFiles/edit_cache.dir
+C:/Users/garku/VSCodeProjects/shooter_game2/build/CMakeFiles/rebuild_cache.dir
+C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-build/CMakeFiles/PDcurses.dir
+C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-build/CMakeFiles/edit_cache.dir
+C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,11 @@
+# Hashes of file build rules.
+4166e8bd3ff1128b8b37102dd6cd5912 CMakeFiles/pdcurses-populate
+9693512bb969a3b93e327d987c2a7f2d CMakeFiles/pdcurses-populate-complete
+e2d02fee44ff9bbd9a179b7632992cb7 pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-build
+b911ad672fb089f3bef2a07f052d53e9 pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-configure
+38264d2d87fb8e7f1c629ec1b0c8b73d pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-download
+5f872ce4482bec4f243e61721db3299f pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-install
+e679488c2a4d0bbbf1f3fbea4159ba37 pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-mkdir
+691e30d697e3e67549e021b817e8e0b5 pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-patch
+0b4e827539157d5c223ad90543c0ee02 pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-test
+a273b11b244dbec1749205ad45678549 pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-update

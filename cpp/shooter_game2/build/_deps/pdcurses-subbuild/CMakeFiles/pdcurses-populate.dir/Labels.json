@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/CMakeFiles/pdcurses-populate"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/CMakeFiles/pdcurses-populate.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/CMakeFiles/pdcurses-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/garku/VSCodeProjects/shooter_game2/build/_deps/pdcurses-subbuild/pdcurses-populate-prefix/src/pdcurses-populate-stamp/pdcurses-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"pdcurses-populate"
+		],
+		"name" : "pdcurses-populate"
+	}
+}
