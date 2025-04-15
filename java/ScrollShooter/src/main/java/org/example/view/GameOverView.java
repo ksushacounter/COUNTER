@@ -13,8 +13,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.model.Main;
 
-public class GameOverView {
+import javax.print.attribute.standard.Media;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 
+public class GameOverView {
     public static void show() {
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -30,16 +34,25 @@ public class GameOverView {
                 System.exit(0);
             });
 
+
             Button restartButton = new Button("Начать заново");
             restartButton.setStyle("-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;");
             restartButton.setOnAction(e -> {
                 stage.close();
-                Main.restartGame();
+                try {
+                    Main.restartGame();
+                } catch (UnsupportedAudioFileException ex) {
+                    throw new RuntimeException(ex);
+                } catch (LineUnavailableException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 
             });
 
-            ImageView logoImage = new ImageView(new Image("file:game_logo.png"));
-            logoImage.setFitWidth(100);
+            ImageView logoImage = new ImageView(new Image("file:C:/Users/garku/IdeaProjects/lab3/dominic.jpg"));
+            logoImage.setFitWidth(250);
             logoImage.setFitHeight(100);
 
             VBox vbox = new VBox(20, logoImage, label, restartButton, exitButton);
