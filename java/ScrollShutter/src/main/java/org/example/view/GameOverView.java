@@ -11,21 +11,30 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.model.Main;
+import org.example.Main;
 
-import javax.print.attribute.standard.Media;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.*;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class GameOverView {
-    public static void show() {
+    private static int maxPrizes = 10;
+
+    public static void show(int points) {
         Platform.runLater(() -> {
+            Label label;
             Stage stage = new Stage();
             stage.setTitle("Game Over");
-
-            Label label = new Label("Игра окончена!");
-            label.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: red;");
+            if (points >= maxPrizes) {
+                label = new Label("Вы выиграли!!!");
+                label.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: red;");
+            } else {
+                label = new Label("Вы проиграли!");
+                label.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: red;");
+            }
 
             Button exitButton = new Button("Выйти");
             exitButton.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4d4d;");
@@ -47,11 +56,15 @@ public class GameOverView {
                     throw new RuntimeException(ex);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
 
             });
+            InputStream inputStream = GameOverView.class.getResourceAsStream("/image/dominic.jpg");
 
-            ImageView logoImage = new ImageView(new Image("file:C:/Users/garku/IdeaProjects/lab3/dominic.jpg"));
+            javafx.scene.image.Image image = new javafx.scene.image.Image(inputStream);
+            ImageView logoImage = new ImageView(image);
             logoImage.setFitWidth(250);
             logoImage.setFitHeight(100);
 

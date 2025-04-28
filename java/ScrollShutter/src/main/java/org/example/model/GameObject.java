@@ -8,16 +8,18 @@ public abstract class GameObject {
     private int x;
     private int y;
     private int lives;
-    private Image skin;
     private int width;
     private int height;
+    private int points;
 
-    public int getX(){
+    public int getX() {
         return x;
     }
-    public int getY(){
+
+    public int getY() {
         return y;
     }
+
     public void moveLeft() {
         x -= 10;
     }
@@ -26,22 +28,20 @@ public abstract class GameObject {
         x += 10;
     }
 
-    public void moveDown(){
+    public void moveDown() {
         y -= 10;
     }
 
     public int getLives() {
         return lives;
     }
+
     public void minusLives() {
         this.lives = lives - 1;
     }
+
     public void newLives() {
         this.lives = 5;
-    }
-
-    public Image getSkin() {
-        return skin;
     }
 
     public int getWidth() {
@@ -50,5 +50,13 @@ public abstract class GameObject {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints() {
+        this.points = points++;
     }
 }
