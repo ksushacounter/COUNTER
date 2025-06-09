@@ -1,0 +1,16 @@
+мая 30, 2025 12:47:38 AM ru.nsu.garkusha.ClientHandler setupLogger
+CONFIG: Логгер ClientHandler настроен на запись в файл
+мая 30, 2025 12:47:38 AM ru.nsu.garkusha.ClientHandler run
+INFO: Новый пользователь зарегистрирован: user
+мая 30, 2025 12:47:38 AM ru.nsu.garkusha.ClientHandler run
+INFO: Пользователь user успешно авторизовался
+мая 30, 2025 12:47:38 AM ru.nsu.garkusha.ClientHandler run
+INFO: Пользователь user добавлен в чат. Всего пользователей: 1
+мая 30, 2025 12:47:38 AM ru.nsu.garkusha.ClientHandler run
+FINE: Запрос списка пользователей от user
+мая 30, 2025 12:48:07 AM ru.nsu.garkusha.ClientHandler run
+INFO: Сообщение от user: ddd
+мая 30, 2025 12:48:17 AM ru.nsu.garkusha.ClientHandler run
+INFO: Пользователь user вышел из чата
+мая 30, 2025 12:48:17 AM ru.nsu.garkusha.ClientHandler run
+INFO: Пользователь user отключился
