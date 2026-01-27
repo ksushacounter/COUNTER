@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "cratonml_gui"
+version = "1.5.0.2"
+description = ""
+authors = ["KamashevAM"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+pyside6 = "6.8.2"
+pyinstaller = "^6.11.1"
+matplotlib = "^3.10.1"
+qdarkstyle = "^3.2.3"
+fonttools = "4.55.6"
+pyqtgraph = "^0.13.7"
+cratonapi = "^0.1.0.21"
+cratonml = "^0.1.1.37"
+toml = "^0.10.2"
+
+[tool.poetry.group.lint.dependencies]
+black = "^24.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+MLToolBox = 'cratonml_gui.main:main'
+build = 'cratonml_gui.pyinstaller:install'
