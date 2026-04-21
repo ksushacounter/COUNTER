@@ -1,92 +1,229 @@
-# cratonml_gui
+# 🪨 FaciesAI — ML Toolbox для интерпретации геологических данных
 
+## 📋 Оглавление
 
+- [О проекте](#-о-проекте)
+- [Возможности](#-возможности)
+- [Технологический стек](#-технологический-стек)
+- [Архитектура](#-архитектура)
+- [Установка](#-установка)
+- [Запуск](#-запуск)
+- [Использование](#-использование)
+- [Структура проекта](#-структура-проекта)
+- [Разработка](#-разработка)
+- [Авторы](#-авторы)
+- [Лицензия](#-лицензия)
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 🔍 О проекте
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+**FaciesAI** (ранее `cratonml_gui`) — это кроссплатформенное desktop-приложение, предоставляющее интуитивный интерфейс для:
 
-## Add your files
+- 📊 Визуализации каротажных кривых и геологических разрезов
+- 🤖 Применения ML-моделей для кластеризации и классификации фаций
+- 🗂️ Работы с метаданными: скважины, гриды, кубы, стратиграфические уровни
+- 🔌 Интеграции с внешней платформой **WSeis** через IPC (pipes/sockets)
+- 🎨 Переключения между светлой и тёмной темами оформления
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Приложение построено на основе библиотеки [`cratonml`](https://pypi.org/project/cratonml/) и использует архитектуру **MVC** для разделения логики, данных и представления.
+
+---
+
+## ✨ Возможности
+
+### 🧭 Интерпретация данных ГИС
+- Загрузка и отображение каротажных кривых
+- Настройка визуализации: цвета, масштабы, отображение тегов
+- Работа со стратиграфическими уровнями и маркерами
+
+### 🤖 Машинное обучение
+- Предобработка данных: нормализация, обработка выбросов
+- Кластеризация (K-Means, DBSCAN и др.)
+- Методы снижения размерности: PCA, t-SNE
+- Прогнозирование фаций на основе обученных моделей
+
+### 🔗 Интеграция с WSeis
+- Автоматическое подключение к WSeis через named pipes (Windows) или Unix sockets (Linux)
+- Чтение метаданных в фоновом режиме с индикаторами прогресса
+- Обновление данных «на лету» без перезапуска приложения
+
+### 🎨 Пользовательский интерфейс
+- Адаптивный интерфейс на **PySide6**
+- Поддержка **тёмной/светлой темы** с анимированным переключателем
+- Модульная система вкладок для расширения функционала
+- Логи событий и система уведомлений об ошибках
+
+---
+
+## 🛠 Технологический стек
+
+| Компонент | Технология |
+|-----------|-----------|
+| **Язык** | Python 3.11 – 3.12 |
+| **GUI** | PySide6 (Qt for Python) |
+| **Визуализация** | matplotlib, pyqtgraph |
+| **ML-бэкенд** | cratonml, cratonapi |
+| **Сборка** | Poetry, PyInstaller |
+| **Темы** | qdarkstyle, кастомные QSS-стили |
+| **Логирование** | встроенный `logging` |
+| **Платформы** | Windows, Linux |
+
+### 🔧 Зависимости (`pyproject.toml`)
+
+```toml
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+pyside6 = "6.8.2"
+pyinstaller = "^6.11.1"
+matplotlib = "^3.10.1"
+qdarkstyle = "^3.2.3"
+fonttools = "4.55.6"
+pyqtgraph = "^0.13.7"
+cratonapi = "^0.1.0.21"
+cratonml = "^0.1.1.37"
+toml = "^0.10.2"
+```
+
+---
+
+## 🏗 Архитектура
+
+Проект следует паттерну **Model-View-Controller** с модульной структурой:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab-gpn-noc.nsu.ru/a_kamashev/cratonml_gui.git
-git branch -M main
-git push -uf origin main
+FaciesAI/
+├── cratonml_gui/              # Основной пакет приложения
+│   ├── main.py                # Точка входа, MainWindow
+│   ├── UniversalWidgets/      # Переиспользуемые UI-компоненты
+│   ├── UniversalControllers/  # Контроллеры для фоновых задач
+│   ├── UniversalProcessing/   # Логика обработки данных
+│   ├── templates/WLI/         # Модуль Well Log Interpretation
+│   │   ├── WLI_main.py        # Главный виджет интерпретации
+│   │   ├── Widgets/Settings/  # Настройки модуля
+│   │   └── Widgets/View/      # Визуализация данных
+│   ├── Themes/                # Стили и темы оформления
+│   ├── utilities/             # Вспомогательные утилиты
+│   └── icons/                 # Иконки и ресурсы
+├── UniversalWidgets/          # Общие виджеты (вынесены)
+├── templates/                 # Шаблоны для других модулей
+├── pyproject.toml            # Конфигурация Poetry
+└── poetry.lock               # Зафиксированные зависимости
 ```
 
-## Integrate with your tools
+### 🔁 Поток данных при запуске:
+1. Инициализация `QApplication` и splash-экрана
+2. Подключение к WSeis через `DataConnector`
+3. Последовательная загрузка метаданных в фоне (через `QThreadPool`):
+   - Гриды → Кубы → Контуры → Скважины → Теги кривых → Стратиграфия
+4. Создание и отображение виджетов интерпретации
+5. Обновление UI и активация элементов управления
 
-- [ ] [Set up project integrations](https://gitlab-gpn-noc.nsu.ru/a_kamashev/cratonml_gui/-/settings/integrations)
+---
 
-## Collaborate with your team
+## 📦 Установка
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Требования
+- Python **3.11** или **3.12**
+- [Poetry](https://python-poetry.org/docs/#installation) для управления зависимостями
+- Доступ к платформе **WSeis** (для полноценной работы)
 
-## Test and Deploy
+### Шаги установки
 
-Use the built-in continuous integration in GitLab.
+```bash
+# 1. Клонируйте репозиторий
+git clone https://github.com/ksushacounter/COUNTER.git
+cd COUNTER/FaciesAI
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+# 2. Установите зависимости через Poetry
+poetry install
 
-***
+# 3. Активируйте виртуальное окружение
+poetry shell
+```
 
-# Editing this README
+> 💡 **Примечание**: Для работы с WSeis требуется запущенный экземпляр платформы и корректно настроенные пути к IPC-каналам.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+---
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## ▶️ Запуск
 
-## Name
-Choose a self-explaining name for your project.
+### Через Poetry (режим разработки)
+```bash
+poetry run MLToolBox
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### Сборка исполняемого файла
+```bash
+poetry run build
+# Или вручную:
+poetry run pyinstaller cratonml_gui/pyinstaller.py
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+После сборки исполняемый файл появится в директории `dist/`.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+---
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## 🎮 Использование
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+1. **Запустите приложение** — появится splash-экран с индикатором загрузки
+2. **Дождитесь подключения к WSeis** — метаданные загрузятся автоматически
+3. **Перейдите на вкладку «Интерпретация данных ГИС»**:
+   - В панели **Настройки** выберите скважину, кривые и параметры модели
+   - Нажмите **«Старт»** для запуска анализа
+   - Результаты отобразятся в панели **Визуализация**
+4. **Переключайте тему** через анимированный тоггл в правом верхнем углу
+5. **Обновите данные** кнопкой «Update» для синхронизации с WSeis
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### 📁 Логи
+Логи приложения сохраняются в:
+- **Windows**: `%LOCALAPPDATA%\StratoScope\MLToolBox\Logs\mltoolbox.log`
+- **Linux**: `~/.local/share/StratoScope/MLToolBox/Logs/mltoolbox.log`
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+---
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## 🧪 Разработка
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+### Линтинг и форматирование
+```bash
+# Установка инструментов линтинга
+poetry install --with lint
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+# Форматирование кода
+poetry run black .
+```
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### Добавление нового модуля
+1. Создайте папку в `cratonml_gui/templates/`
+2. Реализуйте класс, наследуемый от `TabMain`
+3. Добавьте виджет в `MainWindow.__create_tabs()`
+4. Обновите зависимости в `pyproject.toml` при необходимости
 
-## License
-For open source projects, say how it is licensed.
+### Тестирование интеграции с WSeis
+Для локального тестирования без WSeis можно замокать `DataConnector`:
+```python
+# Пример мока для тестов
+class MockConnection:
+    def read_metadata(self, entity): 
+        return {}
+```
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+---
+
+## 👥 Авторы
+
+- **Ксения Гаркуша** — архитектура, интеграция, реализация представления скважин и интерполяции межскваженного пространства
+- **Юрий Малюгин** — Анализ и применение методов машинного обучения 
+
+- **А.М. Камашев** — разработка ядра `cratonml`, ML-алгоритмы
+- Команда хакатона ПИШ НГУ × Газпром нефть
+
+---
+
+## 🚀 Планы развития (Roadmap)
+
+- [ ] Поддержка экспорта результатов в LAS/CSV
+- [ ] Добавление предобученных моделей для классификации фаций
+- [ ] Плагин-система для подключения пользовательских алгоритмов
+- [ ] Поддержка 3D-визуализации кубов данных
+- [ ] Документация API для расширения функционала
