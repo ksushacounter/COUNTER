@@ -24,7 +24,6 @@
 - 🤖 Применения ML-моделей для кластеризации и классификации фаций
 - 🗂️ Работы с метаданными: скважины, гриды, кубы, стратиграфические уровни
 - 🔌 Интеграции с внешней платформой **WSeis** через IPC (pipes/sockets)
-- 🎨 Переключения между светлой и тёмной темами оформления
 
 Приложение построено на основе библиотеки [`cratonml`](https://pypi.org/project/cratonml/) и использует архитектуру **MVC** для разделения логики, данных и представления.
 
@@ -179,35 +178,6 @@ poetry run pyinstaller cratonml_gui/pyinstaller.py
 Логи приложения сохраняются в:
 - **Windows**: `%LOCALAPPDATA%\StratoScope\MLToolBox\Logs\mltoolbox.log`
 - **Linux**: `~/.local/share/StratoScope/MLToolBox/Logs/mltoolbox.log`
-
----
-
-## 🧪 Разработка
-
-### Линтинг и форматирование
-```bash
-# Установка инструментов линтинга
-poetry install --with lint
-
-# Форматирование кода
-poetry run black .
-```
-
-### Добавление нового модуля
-1. Создайте папку в `cratonml_gui/templates/`
-2. Реализуйте класс, наследуемый от `TabMain`
-3. Добавьте виджет в `MainWindow.__create_tabs()`
-4. Обновите зависимости в `pyproject.toml` при необходимости
-
-### Тестирование интеграции с WSeis
-Для локального тестирования без WSeis можно замокать `DataConnector`:
-```python
-# Пример мока для тестов
-class MockConnection:
-    def read_metadata(self, entity): 
-        return {}
-```
-
 ---
 
 ## 👥 Авторы
